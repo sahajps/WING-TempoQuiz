@@ -1,0 +1,76 @@
+# ---------------------------------------------------------------------------
+# TempoQuiz configuration template.
+#
+# ./run.sh copies this to config/tempoquiz.yml on first run. That copy holds
+# your credentials, is chmod 600, and is listed in .gitignore. Never commit it.
+#
+# Only two values must be changed before the server will start. Both are marked
+# REPLACE_ME below; everything else has a working default.
+# ---------------------------------------------------------------------------
+
+admin:
+  # Sign-in for the instructor console at /admin.
+  username: "admin"
+
+  # Minimum 10 characters, with at least one letter and one digit.
+  # Change it here before the first start, or later with: ./run.sh passwd
+  password: "REPLACE_ME-f3a91c7e4b2d8056"
+
+ngrok:
+  # Set false to run on the local network only, with no public tunnel.
+  enabled: true
+
+  # Free authtoken: https://dashboard.ngrok.com/get-started/your-authtoken
+  authtoken: "REPLACE_ME-7c2e5b8a1fd64039"
+
+  # Free ngrok accounts include one permanent domain. Claim it at
+  # https://dashboard.ngrok.com/domains and put it here, without https://
+  # e.g. "quiz-yourname.ngrok-free.app"
+  #
+  # Strongly recommended: without it ngrok issues a new random URL on every
+  # restart, so the QR code your class scanned yesterday will be dead today.
+  domain: ""
+
+  # Optional. One of: us, eu, ap, au, sa, jp, in. Blank picks the nearest.
+  region: ""
+
+server:
+  port: 3000
+
+  # 0.0.0.0 accepts connections from other machines on your network.
+  # Use 127.0.0.1 to accept only local connections plus the ngrok tunnel.
+  bind: "0.0.0.0"
+
+  # Normally left blank: run.sh detects the live tunnel URL and passes it in,
+  # which is what makes the QR code point somewhere a phone can open.
+  # Set it only if you terminate TLS yourself behind another proxy.
+  public_url: ""
+
+  # Signs session cookies. run.sh generates a real value here on first run.
+  # Changing it later signs everyone out; it is otherwise harmless.
+  session_secret: "REPLACE_ME-generated-on-first-run"
+
+  # Hours before the instructor has to sign in again.
+  session_hours: 12
+
+quiz:
+  # Upper bound on students in one room.
+  max_participants: 400
+
+  # Milliseconds of slack allowed for an answer that arrives just after the
+  # timer expires, to absorb phone and network latency. 0 disables it.
+  answer_grace_ms: 1500
+
+backup:
+  # Snapshot the database this often. 0 disables automatic backups.
+  interval_minutes: 60
+
+  # Number of snapshots to keep before the oldest are deleted.
+  keep: 24
+
+security:
+  # Failed sign-ins from one IP address before it is locked out.
+  login_max_attempts: 8
+
+  # Length of that lockout window, in minutes.
+  login_window_minutes: 15

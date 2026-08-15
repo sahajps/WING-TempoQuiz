@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hosting · TempoQuiz</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="/assets/wing-logo.png">
+<link rel="stylesheet" href="/css/app.css?v=3">
+</head>
+<body>
+
+<header class="masthead">
+  <div class="masthead__inner">
+    <a class="brand" href="/admin/console">
+      <img class="brand__logo" src="/assets/wing-logo.png" alt="WING">
+      <span class="brand__divider"></span>
+      <span>
+        <span class="brand__name">TempoQuiz</span><br>
+        <span class="brand__tag">Host</span>
+      </span>
+    </a>
+    <nav class="masthead__nav">
+      <span id="status-badge" class="badge badge--lobby">lobby</span>
+      <button class="btn btn--sm btn--ghost" type="button" id="mute-toggle"
+              aria-pressed="false" title="Mute or unmute the clock, buzzer and applause">
+        Sound on
+      </button>
+      <a class="navlink" href="/admin/console">Console</a>
+    </nav>
+  </div>
+</header>
+
+<main class="shell shell--wide" id="main">
+  <div class="empty">Loading quiz…</div>
+</main>
+
+<!-- Shown when neither an admin session nor a stored host token is available. -->
+<template id="tpl-token">
+  <div class="shell shell--narrow">
+    <section class="panel">
+      <div class="panel__body">
+        <p class="eyebrow eyebrow--orange">Host access</p>
+        <h1 style="font-size:1.35rem">Host token required</h1>
+        <p class="muted small">This tab is not signed in as the instructor. Sign in to the console, or paste the host token that was shown when this quiz was created.</p>
+        <form id="token-form" style="margin-top:1rem">
+          <div class="field">
+            <label for="token-input">Host token</label>
+            <input id="token-input" type="password" autocomplete="off" spellcheck="false">
+          </div>
+          <div class="row">
+            <button class="btn btn--primary" type="submit">Use token</button>
+            <a class="btn" href="/admin">Sign in instead</a>
+          </div>
+        </form>
+      </div>
+    </section>
+  </div>
+</template>
+
+<script src="/js/common.js?v=2"></script>
+<script src="/js/sound.js?v=3"></script>
+<script src="/js/host.js?v=4"></script>
+</body>
+</html>

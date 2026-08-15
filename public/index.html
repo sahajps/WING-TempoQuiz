@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TempoQuiz · WING-NUS</title>
+<meta name="description" content="Live classroom quizzes from the WING research group at NUS.">
+<meta name="robots" content="noindex">
+<link rel="icon" href="/assets/wing-logo.png">
+<link rel="stylesheet" href="/css/app.css?v=3">
+</head>
+<body>
+
+<header class="masthead">
+  <div class="masthead__inner">
+    <a class="brand" href="/">
+      <img class="brand__logo" src="/assets/wing-logo.png" alt="WING — Web Information Retrieval / Natural Language Processing Group">
+      <span class="brand__divider"></span>
+      <span>
+        <span class="brand__name">TempoQuiz</span><br>
+        <span class="brand__tag">Live classroom quiz</span>
+      </span>
+    </a>
+    <nav class="masthead__nav">
+      <a class="navlink" href="/admin">Instructor sign in</a>
+    </nav>
+  </div>
+</header>
+
+<main class="shell">
+  <div class="split">
+
+    <section class="panel">
+      <div class="panel__body">
+        <p class="eyebrow eyebrow--orange">Join a room</p>
+        <h1>Enter your room code</h1>
+        <p class="muted">Your instructor is showing a six-character code and a QR code on screen. Scan the code, or type it here.</p>
+
+        <form id="join-form" novalidate>
+          <div class="field">
+            <label for="code">Room code</label>
+            <input id="code" name="code" type="text" inputmode="latin"
+                   autocomplete="off" autocapitalize="characters" spellcheck="false"
+                   maxlength="6" placeholder="e.g. H7K2QP"
+                   style="font-family: var(--mono); font-size: 1.6rem; letter-spacing: .22em; text-align: center; text-transform: uppercase; padding: .7rem;">
+            <p class="hint">Six letters and numbers. Capitals are not required.</p>
+          </div>
+          <button class="btn btn--go btn--lg btn--block" type="submit">Continue</button>
+        </form>
+
+        <div id="join-error" class="hidden" style="margin-top: .9rem;"></div>
+      </div>
+    </section>
+
+    <div class="stack" style="--gap: 1.25rem;">
+      <section class="panel">
+        <div class="panel__body">
+          <p class="eyebrow">How it runs</p>
+          <ol class="small muted" style="margin: 0; padding-left: 1.1rem; line-height: 1.75;">
+            <li>Join with a nickname and the last 4 characters of your Student ID.</li>
+            <li>Wait in the lobby until your instructor releases a question.</li>
+            <li>A two-second ready screen appears, then the timer starts.</li>
+            <li>Answer once. Faster correct answers score more.</li>
+          </ol>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel__body">
+          <p class="eyebrow">Scoring</p>
+          <p class="small muted" style="margin:0;">
+            A correct answer is worth <strong>500 points</strong>, plus up to
+            <strong>500 more</strong> depending on how quickly you answer.
+            An incorrect answer scores nothing, and you may only answer once.
+          </p>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel__body">
+          <p class="eyebrow">Teaching with this?</p>
+          <p class="small muted">Sign in to write a quiz, draw fresh questions from the bank, and run the room.</p>
+          <a class="btn btn--primary" href="/admin">Instructor sign in</a>
+        </div>
+      </section>
+    </div>
+
+  </div>
+</main>
+
+<footer class="foot">
+  <span>TempoQuiz — <a href="https://wing.comp.nus.edu.sg/" rel="noreferrer noopener" target="_blank">WING</a>, School of Computing, NUS</span>
+  <span style="margin-left:auto">Student IDs are used for classroom tracking only, and are never shown on the leaderboard.</span>
+</footer>
+
+<script src="/js/common.js?v=2"></script>
+<script src="/js/index.js?v=2"></script>
+</body>
+</html>

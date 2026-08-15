@@ -1,0 +1,28 @@
+# Private configuration: admin password, ngrok authtoken, session secret.
+# The committed template is config/tempoquiz.example.yml.
+config/tempoquiz.yml
+.env
+
+# Quiz database, JSON records and backups. Contains student data.
+data/
+
+node_modules/
+
+# Editor and OS noise
+.DS_Store
+*.swp
+.idea/
+.vscode/
+
+npm-debug.log*
+*.log
+
+# Process ids and logs written by run.sh
+run/
+logs/
+nohup.out
+
+# Local scratch: terminal captures, notes, the superseded project brief
+Run.png
+scratch/
+task.md

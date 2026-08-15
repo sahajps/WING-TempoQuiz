@@ -1,0 +1,23 @@
+{
+  "name": "tempoquiz",
+  "version": "1.0.0",
+  "private": true,
+  "description": "TempoQuiz \u2014 live classroom quiz app for WING-NUS",
+  "license": "MIT",
+  "type": "commonjs",
+  "engines": {
+    "node": ">=22.5.0"
+  },
+  "scripts": {
+    "start": "node --experimental-sqlite --no-warnings server/index.js",
+    "dev": "node --experimental-sqlite --no-warnings --watch server/index.js",
+    "passwd": "node --experimental-sqlite --no-warnings server/cli/passwd.js",
+    "backup": "node --experimental-sqlite --no-warnings server/cli/backup.js",
+    "test": "node --experimental-sqlite --no-warnings --test test/*.test.js"
+  },
+  "dependencies": {
+    "express": "^4.21.2",
+    "qrcode": "^1.5.4",
+    "yaml": "^2.9.0"
+  }
+}

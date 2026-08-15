@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Console · TempoQuiz</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="/assets/wing-logo.png">
+<link rel="stylesheet" href="/css/app.css?v=3">
+</head>
+<body>
+
+<header class="masthead">
+  <div class="masthead__inner">
+    <a class="brand" href="/admin/console">
+      <img class="brand__logo" src="/assets/wing-logo.png" alt="WING">
+      <span class="brand__divider"></span>
+      <span>
+        <span class="brand__name">TempoQuiz</span><br>
+        <span class="brand__tag">Instructor console</span>
+      </span>
+    </a>
+    <nav class="masthead__nav">
+      <span class="small muted" id="who"></span>
+      <button class="btn btn--sm btn--ghost" type="button" id="signout">Sign out</button>
+    </nav>
+  </div>
+</header>
+
+<main class="shell shell--wide">
+
+  <div class="tabs" role="tablist">
+    <button class="tab" role="tab" data-tab="new"      aria-selected="true">New quiz</button>
+    <button class="tab" role="tab" data-tab="bank"     aria-selected="false">Question bank</button>
+    <button class="tab" role="tab" data-tab="quizzes"  aria-selected="false">Quizzes</button>
+    <button class="tab" role="tab" data-tab="settings" aria-selected="false">Settings</button>
+  </div>
+
+  <!-- ============================ NEW QUIZ ============================ -->
+  <section id="tab-new" role="tabpanel">
+    <div class="split">
+
+      <div class="panel">
+        <div class="panel__head">
+          <h2>Write the quiz</h2>
+          <div class="row">
+            <button class="btn btn--sm" type="button" id="load-example">Insert example</button>
+            <button class="btn btn--sm" type="button" id="clear-editor">Clear</button>
+          </div>
+        </div>
+        <div class="panel__body">
+          <p class="hint" style="margin-top:0">
+            Paste Markdown in the TempoQuiz format. ChatGPT writes it well if you show it the example.
+            Validation runs as you type.
+          </p>
+          <label class="sr-only" for="editor">Quiz Markdown</label>
+          <textarea id="editor" class="code" spellcheck="false"
+                    placeholder="# My quiz title&#10;&#10;## Question 1&#10;**Time:** 20&#10;&#10;Question text&#10;&#10;- [x] Correct&#10;- [ ] Wrong&#10;- [ ] Wrong&#10;- [ ] Wrong"></textarea>
+        </div>
+      </div>
+
+      <div class="stack" style="--gap:1.25rem">
+        <div class="panel">
+          <div class="panel__head"><h3>Validation</h3><span id="valid-flag" class="row"></span></div>
+          <div class="panel__body" id="validation">
+            <p class="empty" style="padding:1rem 0">Start typing to see notes here.</p>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel__head"><h3>Create</h3></div>
+          <div class="panel__body">
+            <div class="field">
+              <label for="quiz-name">Quiz title</label>
+              <input id="quiz-name" type="text" maxlength="150" placeholder="Taken from the “#” heading">
+            </div>
+            <label class="check" style="margin-bottom:.9rem">
+              <input type="checkbox" id="add-to-bank" checked>
+              <span>Add these questions to the question bank, so future quizzes know they have been used.</span>
+            </label>
+            <button class="btn btn--go btn--block" type="button" id="create-quiz">Create quiz</button>
+          </div>
+        </div>
+
+        <div class="panel hidden" id="created-panel">
+          <div class="panel__head"><h3>Quiz created</h3></div>
+          <div class="panel__body" id="created-body"></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============================ BANK ============================ -->
+  <section id="tab-bank" role="tabpanel" class="hidden">
+    <div class="stats" id="bank-stats" style="margin-bottom:1.25rem"></div>
+
+    <div class="split">
+      <div class="panel">
+        <div class="panel__head">
+          <h2>Questions</h2>
+          <div class="row">
+            <button class="btn btn--sm" type="button" id="bank-new">New question</button>
+            <button class="btn btn--sm" type="button" id="bank-import">Import Markdown</button>
+            <a class="btn btn--sm" href="/api/bank/export" id="bank-export">Export</a>
+          </div>
+        </div>
+
+        <div class="panel__body" style="border-bottom:1px solid var(--rule)">
+          <div class="row">
+            <input type="search" id="bank-search" placeholder="Search question text…" style="flex:1 1 200px">
+            <select id="bank-topic" style="width:auto"><option value="">All topics</option></select>
+            <select id="bank-status" style="width:auto">
+              <option value="">Any status</option>
+              <option value="available">Never used</option>
+              <option value="reserved">Reserved</option>
+              <option value="used">Already used</option>
+              <option value="retired">Retired</option>
+            </select>
+            <select id="bank-difficulty" style="width:auto">
+              <option value="">Any level</option>
+              <option value="easy">Easy</option>
+              <option value="medium">Medium</option>
+              <option value="hard">Hard</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="panel__body panel__body--flush">
+          <div id="bank-list" class="table-wrap table-wrap--tall">
+            <p class="empty">Loading…</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="stack" style="--gap:1.25rem">
+        <div class="panel">
+          <div class="panel__head"><h3>Build a quiz from the bank</h3></div>
+          <div class="panel__body">
+            <p class="hint" style="margin-top:0">
+              Tick questions in the list, or draw a fresh set at random. Questions a class has already
+              seen are excluded unless you deliberately allow them.
+            </p>
+            <div class="field">
+              <label for="draw-count">Draw at random</label>
+              <div class="row">
+                <input type="number" id="draw-count" min="1" max="50" value="5" style="width:5rem">
+                <select id="draw-topic" style="width:auto"><option value="">Any topic</option></select>
+                <select id="draw-difficulty" style="width:auto">
+                  <option value="">Any level</option>
+                  <option value="easy">Easy</option>
+                  <option value="medium">Medium</option>
+                  <option value="hard">Hard</option>
+                </select>
+                <button class="btn btn--sm" type="button" id="draw-btn">Draw</button>
+              </div>
+            </div>
+            <hr class="divider">
+            <div class="field">
+              <label for="bank-quiz-name">Quiz title</label>
+              <input id="bank-quiz-name" type="text" maxlength="150" placeholder="e.g. Week 5 warm-up">
+            </div>
+            <p class="small muted" id="selection-count">Nothing selected.</p>
+            <button class="btn btn--go btn--block" type="button" id="build-from-bank">Create quiz from selection</button>
+            <label class="check" style="margin-top:.7rem">
+              <input type="checkbox" id="allow-used">
+              <span class="small">Allow questions that have already been used</span>
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================ QUIZZES ============================ -->
+  <section id="tab-quizzes" role="tabpanel" class="hidden">
+    <div class="panel">
+      <div class="panel__head">
+        <h2>Quizzes</h2>
+        <div class="row">
+          <select id="quiz-filter" style="width:auto">
+            <option value="">All</option>
+            <option value="prepared">Prepared</option>
+            <option value="lobby">In lobby</option>
+            <option value="running">Running</option>
+            <option value="finished">Finished</option>
+          </select>
+        </div>
+      </div>
+      <div class="panel__body panel__body--flush">
+        <div id="quiz-list" class="table-wrap table-wrap--tall"><p class="empty">Loading…</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================ SETTINGS ============================ -->
+  <section id="tab-settings" role="tabpanel" class="hidden">
+    <div class="split">
+
+      <div class="stack" style="--gap:1.25rem">
+        <div class="panel">
+          <div class="panel__head"><h2>Administrator account</h2></div>
+          <div class="panel__body">
+            <form id="cred-form" novalidate>
+              <div class="field">
+                <label for="cur-pass">Current password</label>
+                <input id="cur-pass" type="password" autocomplete="current-password">
+              </div>
+              <hr class="divider">
+              <div class="field">
+                <label for="set-user">Username</label>
+                <input id="set-user" type="text" autocomplete="username" autocapitalize="none" spellcheck="false">
+              </div>
+              <div class="field">
+                <label for="set-pass">New password</label>
+                <input id="set-pass" type="password" autocomplete="new-password">
+                <p class="hint">At least 10 characters, including a letter and a number.</p>
+              </div>
+              <div class="field">
+                <label for="set-pass2">Confirm new password</label>
+                <input id="set-pass2" type="password" autocomplete="new-password">
+              </div>
+              <div id="cred-error"></div>
+              <button class="btn btn--primary" type="submit">Update credentials</button>
+              <p class="hint">Saving signs out every other browser that is currently signed in.</p>
+            </form>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel__head"><h3>Backups</h3>
+            <div class="row"><button class="btn btn--sm" type="button" id="backup-now">Back up now</button></div>
+          </div>
+          <div class="panel__body panel__body--flush">
+            <div id="backup-list" class="table-wrap"><p class="empty">Loading…</p></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="stack" style="--gap:1.25rem">
+        <div class="panel">
+          <div class="panel__head"><h3>System</h3>
+            <div class="row"><button class="btn btn--sm btn--ghost" type="button" id="health-refresh">Refresh</button></div>
+          </div>
+          <div class="panel__body" id="health"><p class="empty">Loading…</p></div>
+        </div>
+
+        <div class="panel">
+          <div class="panel__head"><h3>Maintenance</h3></div>
+          <div class="panel__body stack" style="--gap:.6rem">
+            <button class="btn btn--sm btn--block" type="button" data-maint="purge-sessions">Remove expired sign-in sessions</button>
+            <button class="btn btn--sm btn--block" type="button" data-maint="prune-backups">Prune old backups</button>
+            <button class="btn btn--sm btn--block btn--danger" type="button" id="revoke-all">Sign out every other device</button>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel__head"><h3>Where your data lives</h3></div>
+          <div class="panel__body small muted stack" style="--gap:.5rem">
+            <p style="margin:0"><strong>Database</strong> — <code>data/tempoquiz.db</code>, readable only by the account running the server.</p>
+            <p style="margin:0"><strong>JSON records</strong> — <code>data/archives/&lt;date&gt;/&lt;quiz-name&gt;__&lt;code&gt;.json</code>, written whenever a quiz is created, appended to, or finished.</p>
+            <p style="margin:0"><strong>Backups</strong> — <code>data/backups/</code>, snapshotted on a timer.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+</main>
+
+<footer class="foot">
+  <span>TempoQuiz — WING, School of Computing, NUS</span>
+</footer>
+
+<script src="/js/common.js?v=2"></script>
+<script src="/js/console.js?v=3"></script>
+</body>
+</html>

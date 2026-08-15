@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Instructor sign in · TempoQuiz</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="/assets/wing-logo.png">
+<link rel="stylesheet" href="/css/app.css?v=3">
+</head>
+<body>
+
+<main class="signin">
+  <div class="signin__card">
+    <a href="/"><img class="signin__logo" src="/assets/wing-logo.png" alt="WING — Web Information Retrieval / Natural Language Processing Group"></a>
+
+    <section class="panel" id="panel-login">
+      <div class="panel__body">
+        <p class="eyebrow eyebrow--orange">TempoQuiz</p>
+        <h1 style="font-size:1.4rem">Instructor sign in</h1>
+        <p class="muted small">This console is for teaching staff. Students do not need an account — they join with a room code.</p>
+
+        <form id="login-form" novalidate style="margin-top:1.2rem">
+          <div class="field">
+            <label for="username">Username</label>
+            <input id="username" name="username" type="text" autocomplete="username" autocapitalize="none" spellcheck="false">
+          </div>
+          <div class="field">
+            <label for="password">Password</label>
+            <input id="password" name="password" type="password" autocomplete="current-password">
+          </div>
+          <div id="login-error" class="hidden" style="margin-bottom:.9rem"></div>
+          <button class="btn btn--primary btn--lg btn--block" type="submit">Sign in</button>
+        </form>
+      </div>
+      <div class="panel__foot tiny muted">
+        Lost the password? Run <code>npm run passwd</code> on the machine hosting TempoQuiz.
+      </div>
+    </section>
+
+    <section class="panel hidden" id="panel-change">
+      <div class="panel__body">
+        <p class="eyebrow eyebrow--orange">First sign-in</p>
+        <h1 style="font-size:1.4rem">Choose a password</h1>
+        <div class="notice notice--warn" style="margin-bottom:1rem">
+          The temporary password was printed to the server log, so it must be replaced before the console can be used.
+        </div>
+
+        <form id="change-form" novalidate>
+          <div class="field">
+            <label for="new-username">Username</label>
+            <input id="new-username" name="new-username" type="text" autocomplete="username" autocapitalize="none" spellcheck="false">
+            <p class="hint">3–40 characters: letters, numbers, dot, dash or underscore.</p>
+          </div>
+          <div class="field">
+            <label for="new-password">New password</label>
+            <input id="new-password" name="new-password" type="password" autocomplete="new-password">
+            <p class="hint">At least 10 characters, including a letter and a number.</p>
+          </div>
+          <div class="field">
+            <label for="confirm-password">Confirm new password</label>
+            <input id="confirm-password" name="confirm-password" type="password" autocomplete="new-password">
+          </div>
+          <div id="change-error" class="hidden" style="margin-bottom:.9rem"></div>
+          <button class="btn btn--go btn--lg btn--block" type="submit">Save and continue</button>
+        </form>
+      </div>
+    </section>
+
+    <p class="tiny muted center" style="margin-top:1.1rem">
+      <a href="/">← Back to the student page</a>
+    </p>
+  </div>
+</main>
+
+<script src="/js/common.js?v=2"></script>
+<script src="/js/admin.js?v=2"></script>
+</body>
+</html>

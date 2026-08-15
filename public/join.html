@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Join · TempoQuiz</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="/assets/wing-logo.png">
+<link rel="stylesheet" href="/css/app.css?v=3">
+</head>
+<body>
+
+<header class="masthead">
+  <div class="masthead__inner">
+    <a class="brand" href="/">
+      <img class="brand__logo" src="/assets/wing-logo.png" alt="WING — Web Information Retrieval / Natural Language Processing Group">
+      <span class="brand__divider"></span>
+      <span>
+        <span class="brand__name">TempoQuiz</span><br>
+        <span class="brand__tag">Live classroom quiz</span>
+      </span>
+    </a>
+  </div>
+</header>
+
+<main class="shell shell--narrow">
+
+  <div id="loading" class="empty">Loading room…</div>
+
+  <section id="room" class="panel hidden">
+    <div class="panel__body">
+      <p class="eyebrow eyebrow--orange">Room <span id="room-code"></span></p>
+      <h1 id="room-name">Quiz</h1>
+      <p class="muted small" id="room-meta"></p>
+
+      <hr class="divider">
+
+      <form id="join-form" novalidate>
+        <div class="field">
+          <label for="nickname">Your nickname</label>
+          <input id="nickname" name="nickname" type="text" maxlength="24"
+                 autocomplete="nickname" placeholder="How you want to appear on the leaderboard">
+          <p class="hint">2–24 characters. This is what the class sees.</p>
+        </div>
+
+        <div class="field">
+          <label for="suffix">Last 4 characters of your Student ID</label>
+          <input id="suffix" name="suffix" type="text" maxlength="4"
+                 inputmode="latin" autocomplete="off" autocapitalize="characters"
+                 spellcheck="false" placeholder="123E"
+                 style="font-family: var(--mono); font-size: 1.15rem; letter-spacing: .16em; text-transform: uppercase; max-width: 9rem;">
+          <p class="hint">Four letters or digits, for example <code>123E</code>. Only your instructor sees this — it never appears on the leaderboard or the projected screen.</p>
+        </div>
+
+        <div id="join-error" class="hidden" style="margin-bottom: .9rem;"></div>
+
+        <button class="btn btn--go btn--lg btn--block" type="submit">Join the quiz</button>
+      </form>
+    </div>
+  </section>
+
+  <section id="closed" class="panel hidden">
+    <div class="panel__body bigstate">
+      <div class="bigstate__icon">✓</div>
+      <h2>This quiz has finished</h2>
+      <p class="muted">Ask your instructor for the results.</p>
+      <a class="btn" href="/">Back to the start</a>
+    </div>
+  </section>
+
+  <!-- The quiz exists and is prepared, but the instructor has not opened the
+       room yet — most likely a student scanning ahead of the lecture. -->
+  <section id="waiting" class="panel hidden">
+    <div class="panel__body bigstate">
+      <div class="bigstate__icon">⏳</div>
+      <h2>Not open yet</h2>
+      <p class="muted" id="waiting-detail">Your instructor has not opened this room yet. Keep this page open — it will let you in as soon as they do.</p>
+      <a class="btn" href="/">Back to the start</a>
+    </div>
+  </section>
+
+  <section id="missing" class="panel hidden">
+    <div class="panel__body bigstate">
+      <div class="bigstate__icon bigstate__icon--bad">!</div>
+      <h2>Room not found</h2>
+      <p class="muted" id="missing-detail">No quiz is using that room code.</p>
+      <a class="btn" href="/">Try another code</a>
+    </div>
+  </section>
+
+</main>
+
+<footer class="foot">
+  <span>TempoQuiz — WING, School of Computing, NUS</span>
+</footer>
+
+<script src="/js/common.js?v=2"></script>
+<script src="/js/join.js?v=3"></script>
+</body>
+</html>
