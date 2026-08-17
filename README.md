@@ -158,21 +158,49 @@ suite uses.
 In the console, **New quiz**. Press *Insert example* to see the shape, then replace it.
 Validation runs as you type and points at the exact line of anything wrong.
 
+This is what *Insert example* gives you, verbatim:
+
 ````markdown
-# Week 3 — Ranked retrieval
+# Example — Ranked retrieval
 
 ## Question 1
 **Time:** 20
-**Topic:** Retrieval
+**Topic:** Example — Ranked retrieval
 **Difficulty:** easy
+
+In a term-document incidence matrix, what does a 1 in row *calpurnia*, column *Hamlet* mean?
+
+- [ ] The term is the most frequent word in the play
+- [x] The term occurs somewhere in the play
+- [ ] The term occurs exactly once in the play
+- [ ] The play is the top result for the query
+
+## Question 2
+**Time:** 30
+**Topic:** Example — Ranked retrieval
+**Difficulty:** medium
 
 Why is inverse document frequency used alongside term frequency?
 
 - [ ] It makes the index smaller
-- [x] It reduces the weight of terms that appear in many documents
 - [ ] It speeds up posting-list intersection
+- [x] It reduces the weight of terms that appear in many documents
 - [ ] It normalises for document length
+
+## Question 3
+**Time:** 25
+**Topic:** Example — Ranked retrieval
+**Difficulty:** hard
+
+A system returns 10 documents, 4 of which are relevant, out of 20 relevant documents in the collection. What are precision and recall?
+
+- [x] Precision 0.4, recall 0.2
+- [ ] Precision 0.2, recall 0.4
+- [ ] Precision 0.4, recall 0.4
+- [ ] Precision 0.2, recall 0.2
 ````
+
+The correct option does not have to be first — `- [x]` marks it wherever it sits.
 
 | Field | Required | |
 |---|---|---|

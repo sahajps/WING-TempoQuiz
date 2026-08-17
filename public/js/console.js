@@ -1,11 +1,13 @@
 'use strict';
 
 (() => {
-  const EXAMPLE = `# Week 3 — Ranked retrieval
+  // Kept identical to the example in the README, so the documentation and the
+  // editor never drift apart.
+  const EXAMPLE = `# Example — Ranked retrieval
 
 ## Question 1
 **Time:** 20
-**Topic:** Retrieval
+**Topic:** Example — Ranked retrieval
 **Difficulty:** easy
 
 In a term-document incidence matrix, what does a 1 in row *calpurnia*, column *Hamlet* mean?
@@ -17,9 +19,8 @@ In a term-document incidence matrix, what does a 1 in row *calpurnia*, column *H
 
 ## Question 2
 **Time:** 30
-**Topic:** Retrieval
+**Topic:** Example — Ranked retrieval
 **Difficulty:** medium
-**Reveal:** slow
 
 Why is inverse document frequency used alongside term frequency?
 
@@ -30,9 +31,8 @@ Why is inverse document frequency used alongside term frequency?
 
 ## Question 3
 **Time:** 25
-**Topic:** Evaluation
+**Topic:** Example — Ranked retrieval
 **Difficulty:** hard
-**Show ranking:** no
 
 A system returns 10 documents, 4 of which are relevant, out of 20 relevant documents in the collection. What are precision and recall?
 
