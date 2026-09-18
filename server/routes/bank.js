@@ -33,7 +33,11 @@ router.get('/questions', asyncRoute(async (req, res) => {
 router.get('/questions/:id', asyncRoute(async (req, res) => {
   const question = bank.getQuestion(Number(req.params.id));
   if (!question) throw badRequest('That question is not in the bank.');
-  res.json({ question, history: bank.usageHistory(question.id) });
+  res.json({
+    question,
+    markdown: md.serializeQuestion(question, 1),
+    history: bank.usageHistory(question.id),
+  });
 }));
 
 router.post('/questions', requireCsrf, asyncRoute(async (req, res) => {
@@ -41,7 +45,11 @@ router.post('/questions', requireCsrf, asyncRoute(async (req, res) => {
 }));
 
 router.patch('/questions/:id', requireCsrf, asyncRoute(async (req, res) => {
-  res.json({ ok: true, question: bank.updateQuestion(Number(req.params.id), req.body || {}) });
+  const body = req.body || {};
+  const question = typeof body.markdown === 'string'
+    ? bank.updateQuestionMarkdown(Number(req.params.id), body.markdown)
+    : bank.updateQuestion(Number(req.params.id), body);
+  res.json({ ok: true, question });
 }));
 
 router.post('/questions/:id/retire', requireCsrf, asyncRoute(async (req, res) => {

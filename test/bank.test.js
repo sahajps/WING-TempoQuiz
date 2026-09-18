@@ -217,3 +217,35 @@ test('the bank exports back to importable Markdown', () => {
   assert.equal(parsed.ok, true, JSON.stringify(parsed.errors));
   assert.equal(parsed.questions[0].prompt, 'Exported question');
 });
+
+test('updates one bank question from Markdown with topic and difficulty', () => {
+  reset();
+  const original = bank.createQuestion(sample('Before editing'));
+  const updated = bank.updateQuestionMarkdown(original.id, `## Question 1
+**Time:** 45
+**Topic:** Neural retrieval
+**Difficulty:** hard
+
+After editing
+
+- [ ] first
+- [x] second
+- [ ] third
+- [ ] fourth`);
+
+  assert.equal(updated.prompt, 'After editing');
+  assert.equal(updated.timeLimit, 45);
+  assert.equal(updated.topic, 'Neural retrieval');
+  assert.equal(updated.difficulty, 'hard');
+  assert.equal(updated.answerIndex, 1);
+});
+
+test('refuses invalid Markdown when updating a bank question', () => {
+  reset();
+  const original = bank.createQuestion(sample('Keep me'));
+  assert.throws(
+    () => bank.updateQuestionMarkdown(original.id, '## Question 1\n**Time:** 2\n\nBroken\n\n- [x] only'),
+    (error) => error.status === 400 && Array.isArray(error.details.errors),
+  );
+  assert.equal(bank.getQuestion(original.id).prompt, 'Keep me');
+});

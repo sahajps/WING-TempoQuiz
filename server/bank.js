@@ -262,6 +262,20 @@ function updateQuestion(id, input) {
   return getQuestion(id);
 }
 
+/** Validates one Markdown question block, then applies it to an existing row. */
+function updateQuestionMarkdown(id, markdown) {
+  const parsed = md.parseQuestionBlocks(markdown);
+  if (parsed.errors.length) {
+    throw badRequest('The Markdown has validation problems. Fix them and save again.', {
+      errors: parsed.errors,
+    });
+  }
+  if (parsed.questions.length !== 1) {
+    throw badRequest('Edit exactly one question at a time.');
+  }
+  return updateQuestion(id, parsed.questions[0]);
+}
+
 function setRetired(id, retired) {
   const current = query.get('SELECT id FROM bank_question WHERE id = ?', id);
   if (!current) throw notFound('That question is not in the bank.');
@@ -459,6 +473,7 @@ module.exports = {
   countQuestions,
   createQuestion,
   updateQuestion,
+  updateQuestionMarkdown,
   deleteQuestion,
   setRetired,
   usageHistory,

@@ -498,8 +498,63 @@ A system returns 10 documents, 4 of which are relevant, out of 20 relevant docum
     }
   }
 
+  /** Existing questions are edited in the same Markdown format used for quizzes. */
+  async function editQuestionMarkdown(question) {
+    let result;
+    try {
+      result = await TQ.get(`/api/bank/questions/${question.id}`);
+    } catch (error) {
+      TQ.fail(error);
+      return;
+    }
+
+    const textarea = TQ.el('textarea', {
+      class: 'code',
+      style: 'min-height:360px',
+      spellcheck: 'false',
+      text: result.markdown,
+    });
+    const errorBox = TQ.el('div');
+
+    modal('Edit question', [
+      TQ.el('p', {
+        class: 'hint',
+        style: 'margin-top:0',
+        text: 'Edit this question as Markdown. Keep one “## Question 1” block; Topic and Difficulty can be changed below the Time setting.',
+      }),
+      textarea,
+      errorBox,
+    ], (close) => [
+      TQ.el('button', { class: 'btn', type: 'button', onclick: close }, ['Cancel']),
+      TQ.el('button', {
+        class: 'btn btn--primary', type: 'button',
+        onclick: async (event) => {
+          const button = event.currentTarget;
+          button.disabled = true;
+          TQ.clear(errorBox);
+          try {
+            await TQ.patch(`/api/bank/questions/${question.id}`, { markdown: textarea.value });
+            TQ.toast('Question updated.', 'ok');
+            close();
+            loadBank();
+            loadTopics();
+          } catch (error) {
+            errorBox.append(...errorNotes(error));
+          } finally {
+            button.disabled = false;
+          }
+        },
+      }, ['Save changes']),
+    ]);
+    textarea.focus();
+  }
+
   /** Shared editor for creating and updating a bank question. */
   function editQuestion(question) {
+    if (question) {
+      editQuestionMarkdown(question);
+      return;
+    }
     const isNew = !question;
     const data = question || {
       topic: '', difficulty: 'medium', prompt: '', timeLimit: 20,
